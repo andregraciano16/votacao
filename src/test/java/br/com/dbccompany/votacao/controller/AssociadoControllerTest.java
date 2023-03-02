@@ -16,53 +16,53 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
-import br.com.dbccompany.votacao.entity.Pauta;
-import br.com.dbccompany.votacao.request.PautaRequest;
-import br.com.dbccompany.votacao.service.PautaService;
+import br.com.dbccompany.votacao.entity.Associado;
+import br.com.dbccompany.votacao.request.AssociadoRequest;
+import br.com.dbccompany.votacao.service.AssociadoService;
 
 @AutoConfigureJsonTesters
-@WebMvcTest(PautaController.class)
-public class PautaControllerTest {
+@WebMvcTest(AssociadoController.class)
+public class AssociadoControllerTest {
 
 	@Autowired
 	private MockMvc mvc;
 	
 	@Autowired
-	private JacksonTester<PautaRequest> jsonPautaRequest;
+	private JacksonTester<AssociadoRequest> jsonAssociadoRequest;
 	@Autowired
-	private JacksonTester<Pauta> jsonPauta;
+	private JacksonTester<Associado> jsonAssociado;
 	
 	@MockBean
-	private PautaService pautaService;
+	private AssociadoService associadoService;
 
-	private static PautaRequest pautaRequest;
-	private static Pauta pauta;
+	private static AssociadoRequest associadoRequest;
+	private static Associado associado;
 	
 	@BeforeAll
 	public static void carregarDados() {
-		pautaRequest = PautaRequest.builder().nome("Cadastro Unico").build();
-		pauta = Pauta.builder().id(1).nome("Cadastro Unico").build();
+		associadoRequest = AssociadoRequest.builder().nome("Maria da Silva").build();
+		associado = Associado.builder().id(1).nome("Maria da Silva").build();
 	}
 	
 	@Test
 	public void deveCadastrarUmaPauta() throws Exception {
-		given(pautaService.cadastrar(pautaRequest)).willReturn(pauta);
+		given(associadoService.cadastrar(associadoRequest)).willReturn(associado);
 
-		MockHttpServletResponse response = mvc.perform(post("/pauta").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON).content(jsonPautaRequest.write(pautaRequest).getJson()))
+		MockHttpServletResponse response = mvc.perform(post("/associado").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON).content(jsonAssociadoRequest.write(associadoRequest).getJson()))
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-		assertThat(response.getContentAsString()).isEqualTo(jsonPauta.write(pauta).getJson());
+		assertThat(response.getContentAsString()).isEqualTo(jsonAssociado.write(associado).getJson());
 
 	}
 	
 	@Test
 	public void deveRetornarErro400() throws Exception {
-		PautaRequest pautaRequestErro =  PautaRequest.builder().nome("").build();
+		AssociadoRequest associadoRequest = AssociadoRequest.builder().nome("").build();
 		
-		MockHttpServletResponse response = mvc.perform(post("/pauta").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON).content(jsonPautaRequest.write(pautaRequestErro).getJson()))
+		MockHttpServletResponse response = mvc.perform(post("/associado").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON).content(jsonAssociadoRequest.write(associadoRequest).getJson()))
 				.andReturn().getResponse();
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
 		
