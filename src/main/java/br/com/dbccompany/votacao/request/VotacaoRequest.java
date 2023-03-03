@@ -21,9 +21,7 @@ public class VotacaoRequest {
 	@NotNull(message = "{mensagem.validacao.id.pauta.obrigatorio}")
 	@Positive(message = "{mensagem.validacao.id.pauta.positivo}")
 	private Integer idPauta;
-	
-	@NotNull(message = "{mensagem.validacao.tempo.obrigatorio}")
-	@Positive(message = "{mensagem.validacao.tempo.positivo}")	
+		
 	private Integer tempoEmMinutos;
 	
 }

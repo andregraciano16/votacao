@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.dbccompany.votacao.entity.Pauta;
 import br.com.dbccompany.votacao.entity.Votacao;
-import br.com.dbccompany.votacao.exception.PautaNotFoundException;
+import br.com.dbccompany.votacao.exception.EntityNotFoundException;
 import br.com.dbccompany.votacao.repository.VotacaoRepository;
 import br.com.dbccompany.votacao.request.VotacaoRequest;
 
@@ -18,16 +18,22 @@ public class VotacaoService {
 	@Autowired
 	private PautaService pautaService;
 	
-	public Votacao cadastrar(VotacaoRequest votacaoRequest) throws PautaNotFoundException {
+	public Votacao cadastrar(VotacaoRequest votacaoRequest) throws EntityNotFoundException {
 		try {
 			Pauta pauta = pautaService.findById(votacaoRequest.getIdPauta());
 			Votacao votacao = Votacao.builder()
 					.pauta(pauta)
 					.tempoMinutos(votacaoRequest.getTempoEmMinutos()).build();
 			return votacaoRepository.save(votacao);
-		} catch (PautaNotFoundException e) {
+		} catch (EntityNotFoundException e) {
 			throw e;
 		}
+	}
+	
+	public Votacao findById(Integer id) throws EntityNotFoundException {
+		return votacaoRepository.findById(id).orElseThrow(
+				() -> new EntityNotFoundException("Votação não encontrada")
+		);		
 	}
 	
 }
