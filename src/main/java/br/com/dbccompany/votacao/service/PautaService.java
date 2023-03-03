@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.dbccompany.votacao.entity.Pauta;
-import br.com.dbccompany.votacao.exception.PautaNotFoundException;
+import br.com.dbccompany.votacao.exception.EntityNotFoundException;
 import br.com.dbccompany.votacao.repository.PautaRepository;
 import br.com.dbccompany.votacao.request.PautaRequest;
 
@@ -19,9 +19,9 @@ public class PautaService {
 		return pautaRepository.save(pauta);
 	}
 	
-	public Pauta findById(Integer id) throws PautaNotFoundException {
+	public Pauta findById(Integer id) throws EntityNotFoundException {
 		return pautaRepository.findById(id).orElseThrow(
-				() -> new PautaNotFoundException("Pauta não encontrada")
+				() -> new EntityNotFoundException("Pauta não encontrada")
 		);		
 	}
 	
