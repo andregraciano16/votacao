@@ -1,5 +1,6 @@
 package br.com.dbccompany.votacao.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,10 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -20,19 +24,31 @@ import lombok.Setter;
 @Setter
 @Builder
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Votacao {
 
 	@Id
 	@GeneratedValue(generator = "id", strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@OneToOne
 	private Pauta pauta;
-	
+
 	@Column(name = "tempo_minutos", nullable = false)
 	private Integer tempoMinutos;
 
 	@OneToMany
 	private List<Voto> votos;
+
+	@Column(name = "data_hora_cadastro", columnDefinition = "TIMESTAMP")
+	private LocalDateTime dataHoraCadastro;
 	
+	@PrePersist
+	void prePersist() {
+		this.dataHoraCadastro = LocalDateTime.now();
+		if (this.tempoMinutos == null) {
+			this.tempoMinutos = 1;
+		}
+	}
 }

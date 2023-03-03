@@ -27,6 +27,9 @@ public class Voto {
 	
 	@ManyToOne
 	private Associado associado;
+	
+	@ManyToOne
+	private Votacao votacao;
 
     @Enumerated(EnumType.ORDINAL)
 	private TipoVotoEnum tipoVoto;
