@@ -1,9 +1,7 @@
 package br.com.dbccompany.votacao.service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import br.com.dbccompany.votacao.entity.Associado;
@@ -14,6 +12,7 @@ import br.com.dbccompany.votacao.exception.VotacaoEncerradaException;
 import br.com.dbccompany.votacao.exception.VotoJaRealizadoException;
 import br.com.dbccompany.votacao.repository.VotoRepository;
 import br.com.dbccompany.votacao.request.VotoRequest;
+import br.com.dbccompany.votacao.util.DataUtil;
 
 @Service
 public class VotoService {
@@ -27,6 +26,9 @@ public class VotoService {
 	@Autowired
 	private VotacaoService votacaoService;
 	
+	@Autowired
+    private MessageSource messageSource;
+	
 	public Voto votar(VotoRequest votoRequest) throws EntityNotFoundException {
 		Associado associado = associadoService.findById(votoRequest.getIdAssociado());
 		Votacao votacao = votacaoService.findById(votoRequest.getIdVotacao());
@@ -37,17 +39,15 @@ public class VotoService {
 	}
 	
 	private void validarSeVotacaoEncerrou (Votacao votacao) {
-		 LocalDateTime dataAtual = LocalDateTime.now();
-		 Duration duracao = Duration.between(votacao.getDataHoraCadastro(), dataAtual);
-	     long minutos = duracao.toMinutes();
+		 long minutos = DataUtil.calcularDiferencaMinutosDataAtual(votacao.getDataHoraCadastro());
 		 if (Long.valueOf(votacao.getTempoMinutos()) < minutos) {
-			 throw new VotacaoEncerradaException("A votação foi encerrada");
+			 throw new VotacaoEncerradaException(messageSource.getMessage("mensagem.votacao.encerrada", null, null));
 		 }
 	}
 	
 	private void validarSeAssociadoJaVotou(VotoRequest votoRequest) {
 		votoRepository.findByAssociadoIdAndVotacaoId(votoRequest.getIdAssociado(), votoRequest.getIdVotacao()).ifPresent(voto -> {
-			throw new VotoJaRealizadoException("Só é possível votar apenas uma vez");
+			throw new VotoJaRealizadoException(messageSource.getMessage("mensagem.voto.unico", null, null));
 		});
 	}
 	
