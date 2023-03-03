@@ -39,5 +39,19 @@ public class CustomExceptionHandler {
 
 		return new ResponseEntity<>(exception.getMessage(), exception.getHttpStatus());
 	}
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException exception,
+			WebRequest request) {
+
+		return new ResponseEntity<>(exception.getMessage(), exception.getHttpStatus());
+	}
+	
+//	@ExceptionHandler(RuntimeException.class)
+//	public ResponseEntity<Object> handleException(RuntimeException exception,
+//			WebRequest request) {
+//
+//		return new ResponseEntity<>("Sistema Indisponível", HttpStatus.INTERNAL_SERVER_ERROR);
+//	}
 
 }

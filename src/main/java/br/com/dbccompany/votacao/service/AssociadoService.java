@@ -1,6 +1,7 @@
 package br.com.dbccompany.votacao.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import br.com.dbccompany.votacao.entity.Associado;
@@ -14,6 +15,9 @@ public class AssociadoService {
 	@Autowired
 	private AssociadoRepository associadoRepository;
 	
+	@Autowired
+    private MessageSource messageSource;
+	
 	public Associado cadastrar(AssociadoRequest associadoRequest) {
 		Associado associado = Associado.builder().nome(associadoRequest.getNome()).build();
 		return associadoRepository.save(associado);
@@ -21,7 +25,7 @@ public class AssociadoService {
 	
 	public Associado findById(Integer id) throws EntityNotFoundException {
 		return associadoRepository.findById(id).orElseThrow(
-				() -> new EntityNotFoundException("Associado não encontrado")
+				() -> new EntityNotFoundException(messageSource.getMessage("mensagem.associado.nao.encontrado", null, null))
 		);		
 	}
 }

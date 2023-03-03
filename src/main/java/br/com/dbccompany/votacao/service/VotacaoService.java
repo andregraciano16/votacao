@@ -1,6 +1,7 @@
 package br.com.dbccompany.votacao.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import br.com.dbccompany.votacao.entity.Pauta;
@@ -18,6 +19,9 @@ public class VotacaoService {
 	@Autowired
 	private PautaService pautaService;
 	
+	@Autowired
+    private MessageSource messageSource;
+	
 	public Votacao cadastrar(VotacaoRequest votacaoRequest) throws EntityNotFoundException {
 		try {
 			Pauta pauta = pautaService.findById(votacaoRequest.getIdPauta());
@@ -32,7 +36,7 @@ public class VotacaoService {
 	
 	public Votacao findById(Integer id) throws EntityNotFoundException {
 		return votacaoRepository.findById(id).orElseThrow(
-				() -> new EntityNotFoundException("Votação não encontrada")
+				() -> new EntityNotFoundException(messageSource.getMessage("mensagem.votacao.nao.encontrada", null, null))
 		);		
 	}
 	
