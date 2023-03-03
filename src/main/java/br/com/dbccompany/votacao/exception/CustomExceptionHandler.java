@@ -25,5 +25,12 @@ public class CustomExceptionHandler {
 		});
 		return new ResponseEntity<>(erros, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(VotoJaRealizadoException.class)
+	public ResponseEntity<Object> handleVotoJaRealizadoException(VotoJaRealizadoException exception,
+			WebRequest request) {
+
+		return new ResponseEntity<>(exception.getMessage(), exception.getHttpStatus());
+	}
 
 }

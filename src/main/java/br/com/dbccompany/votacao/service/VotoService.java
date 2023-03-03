@@ -7,6 +7,7 @@ import br.com.dbccompany.votacao.entity.Associado;
 import br.com.dbccompany.votacao.entity.Votacao;
 import br.com.dbccompany.votacao.entity.Voto;
 import br.com.dbccompany.votacao.exception.EntityNotFoundException;
+import br.com.dbccompany.votacao.exception.VotoJaRealizadoException;
 import br.com.dbccompany.votacao.repository.VotoRepository;
 import br.com.dbccompany.votacao.request.VotoRequest;
 
@@ -25,8 +26,15 @@ public class VotoService {
 	public Voto votar(VotoRequest votoRequest) throws EntityNotFoundException {
 		Associado associado = associadoService.findById(votoRequest.getIdAssociado());
 		Votacao votacao = votacaoService.findById(votoRequest.getIdVotacao());
+		this.validarSeAssociadoJaVotou(votoRequest);
 		Voto voto = Voto.builder().associado(associado).votacao(votacao).tipoVoto(votoRequest.getTipoVoto()).build();
-		return votoRepository.save(voto);
+		return votoRepository.saveAndFlush(voto);
+	}
+	
+	private void validarSeAssociadoJaVotou(VotoRequest votoRequest) {
+		votoRepository.findByAssociadoIdAndVotacaoId(votoRequest.getIdAssociado(), votoRequest.getIdVotacao()).ifPresent(voto -> {
+			throw new VotoJaRealizadoException("Só é possível votar apenas uma vez");
+		});
 	}
 	
 }
