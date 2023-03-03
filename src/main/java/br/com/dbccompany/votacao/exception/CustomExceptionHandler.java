@@ -32,5 +32,12 @@ public class CustomExceptionHandler {
 
 		return new ResponseEntity<>(exception.getMessage(), exception.getHttpStatus());
 	}
+	
+	@ExceptionHandler(VotacaoEncerradaException.class)
+	public ResponseEntity<Object> handleVotoJaRealizadoException(VotacaoEncerradaException exception,
+			WebRequest request) {
+
+		return new ResponseEntity<>(exception.getMessage(), exception.getHttpStatus());
+	}
 
 }

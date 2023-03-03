@@ -46,7 +46,9 @@ public class Votacao {
 	
 	@PrePersist
 	void prePersist() {
-		this.dataHoraCadastro = LocalDateTime.now();
+		if (this.dataHoraCadastro == null) {
+			this.dataHoraCadastro = LocalDateTime.now();
+		}
 		if (this.tempoMinutos == null) {
 			this.tempoMinutos = 1;
 		}
