@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "7b11d559-2859-4266-88c9-d7cb72545049",
+		"name": "Votacao",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5136956"
+	},
+	"item": [
+		{
+			"name": "Pauta",
+			"item": [
+				{
+					"name": "Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pauta 01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/pauta",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"pauta"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Associado",
+			"item": [
+				{
+					"name": "Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Teste2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/associado",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"associado"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Voto",
+			"item": [
+				{
+					"name": "votar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"idVotacao\": \"1\",\r\n\t\"idAssociado\": \"6\",\r\n\t\"tipoVoto\": \"NAO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/voto",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"voto"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Votacao",
+			"item": [
+				{
+					"name": "Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"idPauta\": \"1\",\r\n    \"tempoEmMinutos\": \"10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/votacao",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"votacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/votacao/1/resultado",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"votacao",
+								"1",
+								"resultado"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
